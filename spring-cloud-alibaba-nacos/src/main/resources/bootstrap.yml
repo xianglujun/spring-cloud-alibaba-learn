@@ -2,5 +2,14 @@ config:
   name: bootstrap
   bootstrap: app-boot
 spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.56.101:8848
+        namespace: 48dfde1f-308d-4a79-b1ee-62b2a3ff5320
+        file-extension: yml
+        username: nacos
+        password: nacos
+        group: dev
   application:
-    name: spring-cloud-alibaba-nacos
+    name: spring-nacos

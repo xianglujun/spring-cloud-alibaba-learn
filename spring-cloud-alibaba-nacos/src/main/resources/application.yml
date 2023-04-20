@@ -1,6 +1,7 @@
 config:
   name: application
   app: application
+  test: false
 spring:
   profiles:
     active: dev
