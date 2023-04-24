@@ -2,8 +2,9 @@ package com.learn.asm;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.util.TraceClassVisitor;
 
-import java.util.Arrays;
+import java.io.PrintWriter;
 
 /**
  * @author xianglujun
@@ -25,15 +26,23 @@ public class ClassGenerate {
      */
     public static void main(String[] args) {
         ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-        classWriter.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT + Opcodes.ACC_INTERFACE,
-                "pkg/Comparable", null, "java/lang/Object", new String[]{"pkg/Mesurable"});
-        classWriter.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL, "LESS", "I", null, new Integer(-1));
-        classWriter.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL, "EQUAL", "I", null, new Integer(0));
-        classWriter.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL, "GREATER", "I", null, new Integer(1));
+        TraceClassVisitor visitor = new TraceClassVisitor(classWriter, new PrintWriter(System.out));
 
-        classWriter.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT, "compareTo", "(Ljava/lang/Object;)I", null, null);
-        classWriter.visitEnd();
+        // 检查class是否合法
+//        CheckClassAdapter checkClassAdapter = new CheckClassAdapter(visitor);
 
-        System.out.println(Arrays.toString(classWriter.toByteArray()));
+        visitor.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT + Opcodes.ACC_INTERFACE,
+                "pkg/Comparable", null, "java/lang/Object", new String[]{}); // "pkg/Mesurable"
+        visitor.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL, "LESS", "I", null, new Integer(-1));
+        visitor.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL, "EQUAL", "I", null, new Integer(0));
+        visitor.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL, "GREATER", "I", null, new Integer(1));
+
+        visitor.visitMethod(Opcodes.ACC_PUBLIC + Opcodes.ACC_ABSTRACT, "compareTo", "(Ljava/lang/Object;)I", null, null);
+        visitor.visitEnd();
+
+        byte[] classBytes = classWriter.toByteArray();
+        MyClassLoader classLoader = new MyClassLoader();
+        Class<?> clazz = classLoader.defineClass("pkg.Comparable", classBytes);
+        System.out.println(clazz.getName());
     }
 }
