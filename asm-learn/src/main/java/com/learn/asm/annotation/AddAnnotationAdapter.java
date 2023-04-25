@@ -7,6 +7,8 @@ import org.objectweb.asm.util.TraceClassVisitor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.annotation.ElementType.*;
 import static org.objectweb.asm.Opcodes.ASM4;
@@ -21,15 +23,18 @@ public class AddAnnotationAdapter extends ClassVisitor {
 
     private String annotationDesc;
     private boolean isAnnotationPresent;
+    private Map<String, Object> attrs;
 
-    public AddAnnotationAdapter(String annotationDesc) {
+    public AddAnnotationAdapter(String annotationDesc, Map<String, Object> attrs) {
         super(ASM4);
         this.annotationDesc = annotationDesc;
+        this.attrs = attrs;
     }
 
-    public AddAnnotationAdapter(ClassVisitor cv, String annotationDesc) {
+    public AddAnnotationAdapter(ClassVisitor cv, String annotationDesc, Map<String, Object> attrs) {
         super(ASM4, cv);
         this.annotationDesc = annotationDesc;
+        this.attrs = attrs;
     }
 
     @Override
@@ -74,8 +79,11 @@ public class AddAnnotationAdapter extends ClassVisitor {
     public void addAnnotation() {
         if (!isAnnotationPresent) {
             AnnotationVisitor annotationVisitor = super.visitAnnotation(this.annotationDesc, true);
-            annotationVisitor.visit("desc", "test1111");
+
             if (annotationVisitor != null) {
+                if (attrs != null && attrs.size() > 0) {
+                    attrs.forEach((key, val) -> annotationVisitor.visit(key, val));
+                }
                 annotationVisitor.visitEnd();
             }
             this.isAnnotationPresent = true;
@@ -88,7 +96,9 @@ public class AddAnnotationAdapter extends ClassVisitor {
             ClassReader classReader = new ClassReader(AnnotationTest.class.getName());
             ClassWriter cw = new ClassWriter(classReader, 0);
             TraceClassVisitor traceClassVisitor = new TraceClassVisitor(cw, new PrintWriter(System.out));
-            AddAnnotationAdapter addAnnotationAdapter = new AddAnnotationAdapter(traceClassVisitor, "Lcom/learn/asm/annotation/Anno;");
+            Map<String, Object> attrs = new HashMap<>();
+            attrs.put("desc", "测试");
+            AddAnnotationAdapter addAnnotationAdapter = new AddAnnotationAdapter(traceClassVisitor, "Lcom/learn/asm/annotation/Anno;", attrs);
             classReader.accept(addAnnotationAdapter, 0);
             byte[] bytes = cw.toByteArray();
             MyClassLoader myClassLoader = new MyClassLoader();
