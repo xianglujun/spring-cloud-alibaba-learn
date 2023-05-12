@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    sentinel:
+      block-page: /block_page.html
+      eager: true
+      web-context-unify: true
+      transport:
+        dashboard: 192.168.56.101:8080
+  application:
+    name: alibaba-sentinel
+server:
+  port: 8082

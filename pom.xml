@@ -14,6 +14,7 @@
   <modules>
     <module>spring-cloud-alibaba-nacos</module>
       <module>asm-learn</module>
+      <module>spring-cloud-alibaba-sentinel</module>
   </modules>
 
   <properties>

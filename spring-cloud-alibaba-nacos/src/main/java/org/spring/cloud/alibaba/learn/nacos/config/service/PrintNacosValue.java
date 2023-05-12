@@ -21,7 +21,7 @@ public class PrintNacosValue {
         System.out.println("执行初始化函数....");
         thread = new Thread(() -> {
             while (true) {
-                System.out.println("age值为:" + nacosValueService.getAge());
+//                System.out.println("age值为:" + nacosValueService.getAge());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {

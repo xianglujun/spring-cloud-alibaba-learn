@@ -1,6 +1,8 @@
 config:
   name: bootstrap
   bootstrap: app-boot
+server:
+  port: 8081
 spring:
   cloud:
     nacos:
@@ -11,5 +13,14 @@ spring:
         username: nacos
         password: nacos
         group: dev
+      discovery:
+        enabled: true
+        server-addr: 192.168.56.101:8848
+        namespace: 48dfde1f-308d-4a79-b1ee-62b2a3ff5320
+        username: nacos
+        password: nacos
+        group: dev
+        watch:
+          enabled: true
   application:
     name: spring-nacos

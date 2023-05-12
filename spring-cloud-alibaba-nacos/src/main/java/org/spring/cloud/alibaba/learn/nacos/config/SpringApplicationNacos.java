@@ -3,6 +3,7 @@ package org.spring.cloud.alibaba.learn.nacos.config;
 import org.spring.cloud.alibaba.learn.nacos.config.properties.ConfigProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author xianglujun
  * @date 2023/3/28 15:50
  */
+@EnableDiscoveryClient
 @SpringBootApplication
 public class SpringApplicationNacos {
     public static void main(String[] args) {
