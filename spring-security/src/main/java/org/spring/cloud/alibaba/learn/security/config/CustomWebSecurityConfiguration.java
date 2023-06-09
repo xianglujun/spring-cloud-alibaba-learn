@@ -2,6 +2,7 @@ package org.spring.cloud.alibaba.learn.security.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
  */
 @EnableWebSecurity(debug = true)
 @Configuration
+@EnableMethodSecurity
 public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -80,6 +82,4 @@ public class CustomWebSecurityConfiguration extends WebSecurityConfigurerAdapter
             registry.antMatchers("/**").authenticated();
         });
     }
-
-
 }

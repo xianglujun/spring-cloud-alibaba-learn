@@ -16,6 +16,8 @@
       <module>asm-learn</module>
       <module>spring-cloud-alibaba-sentinel</module>
       <module>spring-security</module>
+      <module>spring-security-authroization-server</module>
+      <module>spring-security-resource-server</module>
   </modules>
 
   <properties>
