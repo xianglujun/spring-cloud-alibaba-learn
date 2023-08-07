@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -32,6 +33,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
     private DataSource dataSource;
 
     @Override
@@ -55,7 +59,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         endpoints
                 // 密码模式需要用户名和密码验证，因此需要单独处理
                 .authenticationManager(this.authenticationManager)
-                .tokenStore(new JdbcTokenStore(dataSource));
+                .tokenStore(new JdbcTokenStore(dataSource))
+                .userDetailsService(userDetailsService);
 
     }
 

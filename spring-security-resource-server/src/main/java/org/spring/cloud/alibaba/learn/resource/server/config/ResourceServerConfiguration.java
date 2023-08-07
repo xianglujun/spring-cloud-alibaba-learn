@@ -1,5 +1,6 @@
 package org.spring.cloud.alibaba.learn.resource.server.config;
 
+import org.spring.cloud.alibaba.learn.resource.server.entrypoint.CustomEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,7 +27,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources
-                .tokenStore(new JdbcTokenStore(dataSource));
+                .tokenStore(new JdbcTokenStore(dataSource))
+                .authenticationEntryPoint(new CustomEntryPoint());
     }
 
     @Override
